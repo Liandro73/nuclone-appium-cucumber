@@ -1,0 +1,9 @@
+image: docker.io/qazando/appium-maven
+
+stages:
+  - test
+
+test-job:
+  stage: test
+  script:
+    - mvn test -Dcucumber.options="--tags @Regressive" -Dplatform=device_farm
