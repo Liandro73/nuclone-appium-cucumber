@@ -7,10 +7,10 @@ import org.openqa.selenium.support.PageFactory;
 
 public class BasePage {
 
-    protected AppiumDriver<?> driver;
+    protected AppiumDriver driver;
     private DashboardPageObject dashboardPageObject;
 
-    public BasePage(AppiumDriver<?> driver) {
+    public BasePage(AppiumDriver driver) {
         this.driver = DriverManager.getDriver();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }

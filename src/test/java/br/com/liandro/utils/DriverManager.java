@@ -1,21 +1,27 @@
 package br.com.liandro.utils;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
+import java.util.HashMap;
 
 public class DriverManager {
 
-    public static AppiumDriver<?> driver;
+    public static AppiumDriver driver;
     public static WebDriverWait webDriverWait;
-    static DesiredCapabilities capabilities = new DesiredCapabilities();
     static String platform;
+    protected static int SHORT_TIMEOUT = 5;
+    protected static int LONG_TIMEOUT = 30;
+
+    public static final String userName = "dernivalliandro_HC5zlF";
+    public static final String accessKey = "sNwiuaTaDB2TbfPcVzi1";
 
     static File app = null;
     static File classpathRoot = new File(System.getProperty("user.dir"));
@@ -29,35 +35,45 @@ public class DriverManager {
         app = new File(classpathRoot, "/src/test/resources/app/nuclone.apk");
 
         if (platform.equals("ANDROID")) {
-            capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-            capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Moto G5s");
-            capabilities.setCapability(MobileCapabilityType.UDID, "emulator-5554");
-            capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UiAutomator2");
-            capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
-            driver = new AppiumDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            webDriverWait = new WebDriverWait(driver, 30);
+            UiAutomator2Options options = new UiAutomator2Options()
+                    .setUdid("emulator-5554")
+                    .setPlatformName("Android")
+                    .setPlatformVersion("13.0")
+                    .setDeviceName("Emulador Pixel 4")
+                    .setApp(app.getAbsolutePath());
+            driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(SHORT_TIMEOUT));
+            webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(LONG_TIMEOUT));
         } else if (platform.equals("DEVICE_FARM")) {
-            capabilities.setCapability("browserstack.user", "dernivalliandro_HC5zlF");
-            capabilities.setCapability("browserstack.key", "sNwiuaTaDB2TbfPcVzi1");
-            capabilities.setCapability("os_version", "13.0");
-            capabilities.setCapability("device", "Google Pixel 7");
+            MutableCapabilities capabilities = new MutableCapabilities();
             capabilities.setCapability("app", "bs://7eac23bd24deb6822fef3a389b6660ffe16dc106");
-            driver = new AppiumDriver<>(new URL("http://hub.browserstack.com/wd/hub"), capabilities);
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            webDriverWait = new WebDriverWait(driver, 30);
+            HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();
+            browserstackOptions.put("userName", userName);
+            browserstackOptions.put("accessKey", accessKey);
+            browserstackOptions.put("osVersion", "13.0");
+            browserstackOptions.put("deviceName", "Samsung Galaxy S23");
+            browserstackOptions.put("projectName", "Nuclone");
+            browserstackOptions.put("buildName", "2.0.0");
+            browserstackOptions.put("sessionName", "Show balance");
+            browserstackOptions.put("appiumVersion", "2.0.0");
+            browserstackOptions.put("local", "false");
+            browserstackOptions.put("debug", "true");
+            browserstackOptions.put("timezone", "Sao_Paulo");
+            capabilities.setCapability("bstack:options", browserstackOptions);
+            driver = new AndroidDriver(new URL("http://hub.browserstack.com/wd/hub"), capabilities);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(SHORT_TIMEOUT));
+            webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(LONG_TIMEOUT));
         } else {
             System.out.println("Platform not found");
         }
     }
 
-    public static AppiumDriver<?> getDriver() {
+    public static AppiumDriver getDriver() {
         return driver;
     }
 
     public static void tearDown() {
         if(driver != null) {
-            driver.closeApp();
             driver.quit();
         }
     }

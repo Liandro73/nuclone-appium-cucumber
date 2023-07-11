@@ -7,7 +7,7 @@ import io.appium.java_client.AppiumDriver;
 
 public class BaseSteps {
 
-    AppiumDriver<?> driver;
+    AppiumDriver driver;
     BasePage basePage;
     DashboardPageObject dashboardPageObject;
 
