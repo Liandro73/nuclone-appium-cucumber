@@ -46,7 +46,7 @@ public class DriverManager {
             webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(LONG_TIMEOUT));
         } else if (platform.equals("DEVICE_FARM")) {
             userName = System.getProperty("user");
-            userName = System.getProperty("key");
+            accessKey = System.getProperty("key");
 
             MutableCapabilities capabilities = new MutableCapabilities();
             capabilities.setCapability("app", "bs://7eac23bd24deb6822fef3a389b6660ffe16dc106");
