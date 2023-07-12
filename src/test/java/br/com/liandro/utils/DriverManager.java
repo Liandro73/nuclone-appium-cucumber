@@ -20,8 +20,8 @@ public class DriverManager {
     protected static int SHORT_TIMEOUT = 5;
     protected static int LONG_TIMEOUT = 30;
 
-    public static final String userName = "dernivalliandro_HC5zlF";
-    public static final String accessKey = "sNwiuaTaDB2TbfPcVzi1";
+    public static String userName;
+    public static String accessKey;
 
     static File app = null;
     static File classpathRoot = new File(System.getProperty("user.dir"));
@@ -45,6 +45,9 @@ public class DriverManager {
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(SHORT_TIMEOUT));
             webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(LONG_TIMEOUT));
         } else if (platform.equals("DEVICE_FARM")) {
+            userName = System.getProperty("user");
+            userName = System.getProperty("key");
+
             MutableCapabilities capabilities = new MutableCapabilities();
             capabilities.setCapability("app", "bs://7eac23bd24deb6822fef3a389b6660ffe16dc106");
             HashMap<String, Object> browserstackOptions = new HashMap<String, Object>();

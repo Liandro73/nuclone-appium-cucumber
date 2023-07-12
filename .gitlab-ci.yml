@@ -6,4 +6,4 @@ stages:
 test-job:
   stage: test
   script:
-    - mvn test -Dcucumber.filter.tags="@Regressive" -Dplatform=device_farm
+    - mvn test -Dcucumber.filter.tags="@Regressive" -Dplatform=device_farm -Duser=dernivalliandro_HC5zlF -Dkey=sNwiuaTaDB2TbfPcVzi1
