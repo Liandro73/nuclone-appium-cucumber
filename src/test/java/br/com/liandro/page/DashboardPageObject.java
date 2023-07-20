@@ -30,7 +30,7 @@ public class DashboardPageObject extends BasePage {
     }
 
     public void checkTheValueOnBalance(String value) {
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        JavascriptExecutor jse = driver;
 
         labelBalance.isDisplayed();
         if (value.equals(labelBalance.getText())) {
